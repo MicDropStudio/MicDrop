@@ -1,0 +1,6 @@
+{
+  "name": "MicDrop Studio",
+  "description": "Sito moderno e minimalista per MicDrop Studio, Agenzia Creativa, Podcast e Social Media. Include descrizione dei servizi, gallery interattiva e form di contatto.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

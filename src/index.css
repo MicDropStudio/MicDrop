@@ -1,0 +1,75 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+
+  /* Custom palette matching the Elegant Dark theme guidelines */
+  --color-brand-orange-light: #ffaa44;
+  --color-brand-orange: #f25e00;
+  --color-brand-orange-dark: #b83600;
+  --color-brand-violet-light: #bd93f9;
+  --color-brand-violet: #8b5cf6;
+  --color-brand-violet-dark: #4c1d95;
+  --color-dark-bg: #090610;
+  --color-dark-card: #130f22;
+  --color-dark-border: #231c3a;
+
+  --animate-pulse-slow: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  --animate-float: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #090610;
+}
+::-webkit-scrollbar-thumb {
+  background: #231c3a;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #f25e00;
+}
+
+/* Styling for Markdown and general elements */
+html {
+  scroll-behavior: smooth;
+  background-color: #090610;
+  color: #f3f4f6;
+}
+
+.text-gradient-orange {
+  background: linear-gradient(135deg, #ffaa44 0%, #f25e00 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-purple {
+  background: linear-gradient(135deg, #bd93f9 0%, #8b5cf6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-mixed {
+  background: linear-gradient(135deg, #ffaa44 0%, #f25e00 50%, #8b5cf6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.border-glow-orange {
+  box-shadow: 0 0 15px rgba(242, 94, 0, 0.15);
+}
+
+.border-glow-purple {
+  box-shadow: 0 0 15px rgba(139, 92, 246, 0.15);
+}
