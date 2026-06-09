@@ -160,15 +160,18 @@ export default function Services() {
     }
 
     try {
-      const response = await fetch('/api/contact', {
+      // Chiamata diretta ed efficiente alle API stabili di Web3Forms
+      const response = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Accept': 'application/json'
         },
         body: JSON.stringify({
+          access_key: "359175a9-796c-4421-a92f-4bbc8d341c6f", // La tua chiave univoca attiva
+          subject: subject,
           name: bookingName,
           email: bookingEmail,
-          phone: '',
           service: serviceName,
           message: bookingDetails,
         }),
@@ -178,11 +181,9 @@ export default function Services() {
 
       if (response.ok && data.success) {
         setSmtpStatus('SUCCESS');
-      } else if (data.error === 'SMTP_NOT_CONFIGURED') {
-        setSmtpStatus('NO_CREDENTIALS');
       } else {
         setSmtpStatus('ERROR');
-        setSmtpErrorMsg(data.message || 'Invio server-side non riuscito.');
+        setSmtpErrorMsg(data.message || 'Invio tramite Web3Forms non riuscito.');
       }
     } catch (err: any) {
       console.warn('Backend request failed, falling back to manual dispatch mechanisms.', err);
