@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Mail, Phone, Send, CheckCircle2, Instagram, Youtube, HelpCircle, History, MessageSquare, Briefcase, Plus, MessageCircle, Copy, ExternalLink, AlertTriangle } from 'lucide-react';
+import { Mail, Phone, Send, CheckCircle2, Instagram, HelpCircle, History, MessageSquare, Briefcase, Plus, MessageCircle, Copy, ExternalLink, AlertTriangle } from 'lucide-react';
 import { ContactSubmission } from '../types';
 
 export default function ContactForm() {
@@ -51,6 +51,7 @@ export default function ContactForm() {
 
     setIsSubmitting(true);
     setSmtpStatus('IDLE');
+    setSmtpErrorMsg('');
 
     const subject = `Nuovo Progetto MicDrop Studio - ${name}`;
     const mailBody = `Ciao MicDrop Studio,\n\nEcco i dettagli del mio contatto:\n\n` +
@@ -97,7 +98,8 @@ export default function ContactForm() {
           'Accept': 'application/json'
         },
         body: JSON.stringify({
-          access_key: "359175a9-796c-4421-a92f-4bbc8d341c6f",
+          access_key: "359175a9-796c-4a21-a92f-4bbc8d341c6f",
+          from_name: "Sito MicDrop Studio",
           subject: subject,
           name: name,
           email: email,
@@ -251,7 +253,7 @@ export default function ContactForm() {
                     <div className="flex flex-col gap-2" id="input-group-email">
                       <label className="text-xs font-mono font-bold uppercase text-gray-400 tracking-wider">Email di Lavoro *</label>
                       <input 
-                        type="type" 
+                        type="email" 
                         required
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
@@ -333,11 +335,14 @@ export default function ContactForm() {
 
                   <div id="success-text-header">
                     <h3 className="text-2xl font-black font-display text-white mb-2" id="success-message-title">
-                      Inviato con Successo!
+                      {smtpStatus === 'SUCCESS' ? 'Ricevuto con Successo!' : 'Elaborazione Completata'}
                     </h3>
                     
                     <p className="text-sm text-gray-300 max-w-md mx-auto" id="success-message-lead">
-                      Ottimo! La tua richiesta è stata consegnata direttamente a <strong>agencymicdrop@gmail.com</strong>. Ti risponderemo prontamente nelle prossime ore!
+                      {smtpStatus === 'SUCCESS' 
+                        ? "Ottimo! La tua richiesta è stata recapitata in tempo reale. Ti risponderemo nelle prossime 24 ore!" 
+                        : "La richiesta è stata elaborata localmente. Usa i metodi di backup qui sotto per l'invio immediato."
+                      }
                     </p>
                   </div>
 
@@ -405,14 +410,19 @@ export default function ContactForm() {
                     <div className="flex flex-col gap-2 text-xs" id="success-receipt-lines">
                       <div className="flex items-center justify-between" id="receipt-line-channel">
                         <span className="font-mono text-gray-500">Stato di Consegna:</span>
-                        <span className="font-bold text-emerald-400">
-                          {smtpStatus === 'SUCCESS' ? 'INVIATO (WEB3FORMS)' : 'ELABORATO'}
+                        <span className={`font-bold ${smtpStatus === 'SUCCESS' ? 'text-emerald-400' : 'text-amber-400'}`}>
+                          {smtpStatus === 'SUCCESS' ? 'INVIATO DIRETTAMENTE' : 'REGISTRATO LOCALE'}
                         </span>
                       </div>
                       <div className="flex items-center justify-between" id="receipt-line-service">
                         <span className="font-mono text-gray-500">Destinatario:</span>
                         <span className="font-semibold text-brand-orange">agencymicdrop@gmail.com</span>
                       </div>
+                      {smtpStatus === 'ERROR' && (
+                        <div className="text-[10px] text-rose-400 mt-2 bg-rose-500/10 p-2 rounded-md border border-rose-500/20">
+                          Errore API: {smtpErrorMsg}
+                        </div>
+                      )}
                     </div>
                   </div>
 
