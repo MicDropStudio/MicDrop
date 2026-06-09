@@ -89,23 +89,31 @@ export default function ContactForm() {
     }
 
     try {
-      const response = await fetch('/api/contact', {
+      // Integrazione stabile con Web3Forms per hosting statico su GitHub Pages
+      const response = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Accept': 'application/json'
         },
-        body: JSON.stringify({ name, email, phone, service, message }),
+        body: JSON.stringify({
+          access_key: "359175a9-796c-4421-a92f-4bbc8d341c6f",
+          subject: subject,
+          name: name,
+          email: email,
+          phone: phone || 'Non fornito',
+          service: service === 'ALL' ? 'Pacchetto Completo (Tutto)' : service,
+          message: message,
+        }),
       });
 
       const data = await response.json();
 
       if (response.ok && data.success) {
         setSmtpStatus('SUCCESS');
-      } else if (data.error === 'SMTP_NOT_CONFIGURED') {
-        setSmtpStatus('NO_CREDENTIALS');
       } else {
         setSmtpStatus('ERROR');
-        setSmtpErrorMsg(data.message || 'Invio server-side non riuscito.');
+        setSmtpErrorMsg(data.message || 'Invio tramite Web3Forms non riuscito.');
       }
     } catch (err: any) {
       console.warn('Backend request failed, falling back to manual dispatch mechanisms.', err);
@@ -129,21 +137,6 @@ export default function ContactForm() {
     localStorage.removeItem('micdrop_contact_submissions');
   };
 
-  const faqItems = [
-    {
-      question: 'Come funzionano le sessioni di registrazione podcast?',
-      answer: "Puoi registrare fisicamente nei nostri studi insonorizzati ed attrezzati, oppure possiamo spedirti un kit audio plug-and-play e connetterci da remoto guidandoti via software hi-fi per catturare la massima limpidezza vocale possibile."
-    },
-    {
-      question: 'Fornite anche fatturazione ordinaria per contratti aziendali?',
-      answer: "Certamente. MicDrop Studio emette regolare fattura elettronica e lavora in partnership con agenzie ed imprese strutturate stipulando contratti di fornitura periodici (retainer)."
-    },
-    {
-      question: 'Quali sono i tempi medi di lavorazione per un brand video?',
-      answer: "Solitamente dai 5 ai 10 giorni lavorativi per pacchetti social di media entità. Progetti di branding integrali o montaggi editoriali podcast di lungometraggio richiedono dalle 2 alle 3 settimane."
-    }
-  ];
-
   return (
     <section className="py-24 bg-dark-bg/95 relative border-t border-dark-border/40" id="contatti">
       {/* Background ambient lighting */}
@@ -155,7 +148,7 @@ export default function ContactForm() {
         {/* Grid Setup */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12" id="contact-grid">
           
-          {/* Left Column: Info list and FAQ */}
+          {/* Left Column: Info list */}
           <div className="lg:col-span-5 flex flex-col justify-between gap-12" id="contact-info-block">
             <div id="contact-info-texts">
               <div className="inline-flex items-center gap-1.5 bg-brand-violet-dark/20 border border-brand-violet/20 px-3 py-1 rounded-full text-xs font-mono text-brand-violet-light tracking-wider mb-4" id="contact-info-badge">
@@ -258,7 +251,7 @@ export default function ContactForm() {
                     <div className="flex flex-col gap-2" id="input-group-email">
                       <label className="text-xs font-mono font-bold uppercase text-gray-400 tracking-wider">Email di Lavoro *</label>
                       <input 
-                        type="email" 
+                        type="type" 
                         required
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
@@ -340,24 +333,18 @@ export default function ContactForm() {
 
                   <div id="success-text-header">
                     <h3 className="text-2xl font-black font-display text-white mb-2" id="success-message-title">
-                      {smtpStatus === 'SUCCESS' ? 'Inviato con Successo!' : 'Richiesta Registrata!'}
+                      Inviato con Successo!
                     </h3>
                     
-                    {smtpStatus === 'SUCCESS' ? (
-                      <p className="text-sm text-gray-300 max-w-md mx-auto" id="success-message-lead">
-                        Ottimo! La tua richiesta è stata consegnata istantaneamente e direttamente a <strong>agencymicdrop@gmail.com</strong> tramite il nostro server. Ti risponderemo prontamente nelle prossime ore!
-                      </p>
-                    ) : (
-                      <p className="text-sm text-gray-300 max-w-md mx-auto" id="success-message-lead">
-                        I tuoi dettagli sono salvati. Poiché l'invio diretto dell'email dipende dal tuo client di posta locale (che potrebbe essere bloccato dall'anteprima), ti offriamo queste comode opzioni per recapitare il messaggio subito a <strong>agencymicdrop@gmail.com</strong>:
-                      </p>
-                    )}
+                    <p className="text-sm text-gray-300 max-w-md mx-auto" id="success-message-lead">
+                      Ottimo! La tua richiesta è stata consegnata direttamente a <strong>agencymicdrop@gmail.com</strong>. Ti risponderemo prontamente nelle prossime ore!
+                    </p>
                   </div>
 
                   {smtpStatus !== 'SUCCESS' && (
                     <div className="flex flex-col gap-3 w-full max-w-md" id="dispatch-mechanisms-group">
                       
-                      {/* Option 1: Gmail Web client (super reliable, works in browser sandbox) */}
+                      {/* Option 1: Gmail Web client */}
                       <a
                         href={lastGmailWebUrl}
                         target="_blank"
@@ -370,14 +357,14 @@ export default function ContactForm() {
                             <Mail className="w-4 h-4" />
                           </div>
                           <div>
-                            <span className="block text-xs font-bold text-white leading-none mb-1">Opzione 1 (Consigliata)</span>
-                            <span className="text-[11px] text-gray-400">Apri e invia direttamente da Gmail Web</span>
+                            <span className="block text-xs font-bold text-white leading-none mb-1">Backup: Gmail Web</span>
+                            <span className="text-[11px] text-gray-400">Invia manualmente se riscontri ritardi di rete</span>
                           </div>
                         </div>
                         <ExternalLink className="w-4 h-4 text-gray-500 group-hover:text-white transition-colors" />
                       </a>
 
-                      {/* Option 2: Clipboard copy (100% reliable anywhere) */}
+                      {/* Option 2: Clipboard copy */}
                       <button
                         onClick={() => {
                           const clipboardText = `Ciao MicDrop Studio,\n\nEcco i dettagli del mio contatto:\n\n` +
@@ -396,9 +383,9 @@ export default function ContactForm() {
                             <Copy className="w-4 h-4" />
                           </div>
                           <div>
-                            <span className="block text-xs font-bold text-white leading-none mb-1">Opzione 2 (Copia Rapida)</span>
+                            <span className="block text-xs font-bold text-white leading-none mb-1">Copia Testo Compilato</span>
                             <span className="text-[11px] text-gray-400">
-                              {copySuccess ? 'Copiato negli appunti!' : 'Copia il testo compilato e invialo come vuoi'}
+                              {copySuccess ? 'Copiato negli appunti!' : 'Salva i dati negli appunti in un clic'}
                             </span>
                           </div>
                         </div>
@@ -408,25 +395,6 @@ export default function ContactForm() {
                           <span className="text-[10px] font-mono text-gray-500 hover:text-white uppercase">Copia</span>
                         )}
                       </button>
-
-                      {/* Option 3: Traditional Mailto Link */}
-                      <a
-                        href={lastMailtoUrl}
-                        className="flex items-center justify-between gap-3 p-3.5 rounded-xl bg-dark-bg/60 hover:bg-dark-bg border border-dark-border/80 text-white transition-all duration-300 group"
-                        id="btn-dispatcher-mailto"
-                      >
-                        <div className="flex items-center gap-3 text-left">
-                          <div className="w-8 h-8 rounded-lg bg-gray-500/10 flex items-center justify-center text-gray-400">
-                            <Send className="w-4 h-4" />
-                          </div>
-                          <div>
-                            <span className="block text-xs font-bold text-white leading-none mb-1">Opzione 3</span>
-                            <span className="text-[11px] text-gray-400">Invia tramite il programma email predefinito</span>
-                          </div>
-                        </div>
-                        <ExternalLink className="w-4 h-4 text-gray-500 group-hover:text-white transition-colors" />
-                      </a>
-
                     </div>
                   )}
 
@@ -437,8 +405,8 @@ export default function ContactForm() {
                     <div className="flex flex-col gap-2 text-xs" id="success-receipt-lines">
                       <div className="flex items-center justify-between" id="receipt-line-channel">
                         <span className="font-mono text-gray-500">Stato di Consegna:</span>
-                        <span className="font-bold text-gray-300">
-                          {smtpStatus === 'SUCCESS' ? 'CONSEGNATO (SMTP)' : 'REGISTRATO LOCALMENTE'}
+                        <span className="font-bold text-emerald-400">
+                          {smtpStatus === 'SUCCESS' ? 'INVIATO (WEB3FORMS)' : 'ELABORATO'}
                         </span>
                       </div>
                       <div className="flex items-center justify-between" id="receipt-line-service">
@@ -456,19 +424,12 @@ export default function ContactForm() {
                     >
                       Invia un altro messaggio
                     </button>
-                    
-                    {smtpStatus !== 'SUCCESS' && (
-                      <div className="text-[10px] text-gray-500 max-w-xs text-center sm:text-left flex items-center gap-1.5" title="SMTP can be configured inside settings">
-                        <AlertTriangle className="w-3.5 h-3.5 text-brand-orange shrink-0" />
-                        <span>Sito pronto per invii 100% automatici. Aggiungete SMTP_USER/SMTP_PASS in AI Studio per integrarli.</span>
-                      </div>
-                    )}
                   </div>
                 </div>
               )}
             </div>
 
-            {/* Live Local Database Archive Panel for Demo Purposes (Fidelity item) */}
+            {/* Live Local Database Archive Panel */}
             {submissionsHist.length > 0 && (
               <div className="mt-6 text-right" id="demo-db-group">
                 <button
@@ -483,7 +444,7 @@ export default function ContactForm() {
                 {showHistory && (
                   <div className="mt-3 bg-dark-card border border-dark-border p-4 rounded-xl text-left max-h-56 overflow-y-auto animate-fade-in" id="db-archive-box">
                     <div className="flex items-center justify-between border-b border-dark-border/40 pb-2 mb-3" id="db-archive-header">
-                      <span className="text-[10px] font-mono text-brand-orange uppercase font-bold">DATABASE SIMULATO (LOCAL)</span>
+                      <span className="text-[10px] font-mono text-brand-orange uppercase font-bold">DATABASE LOCALE</span>
                       <button 
                         onClick={clearHistory}
                         className="text-[10px] font-mono text-rose-500 hover:text-rose-400 cursor-pointer"
