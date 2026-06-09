@@ -6,7 +6,7 @@ import { Service } from '../types';
 // @ts-ignore
 import podcastStudioImg from '../assets/images/podcast_studio_1780658975307.png';
 // @ts-ignore
-import agencyBrandingImg from '../assets/images/agency_branding_1780659010673.png';
+import agencyBrandingImg from '../assets/images/agency_branding_1780658992801.png';
 // @ts-ignore
 import socialContentImg from '../assets/images/social_content_1780659010673.png';
 
