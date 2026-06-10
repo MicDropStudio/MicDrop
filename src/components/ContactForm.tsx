@@ -117,7 +117,7 @@ export default function ContactForm() {
                   </div>
                   <div>
                     <span className="block text-[10px] font-mono text-gray-500 uppercase mb-1">PROPOSTE ED INFO</span>
-                    <a href="mailto:agencymicdrop@gmail.com" className="text-sm font-bold text-gray-200 hover:text-white">agencymicdrop@gmail.com</a>
+                    <a href="mailto:info.micdropstudio@gmail.com" className="text-sm font-bold text-gray-200 hover:text-white">agencymicdrop@gmail.com</a>
                   </div>
                 </div>
 

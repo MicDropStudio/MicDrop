@@ -42,21 +42,6 @@ export default function Services() {
       gradientClass: 'from-brand-orange to-brand-orange-dark border-brand-orange/30 group-hover:border-brand-orange/60'
     },
     {
-      id: 'creative-agency',
-      title: 'Creative Agency',
-      description: 'Diamo un volto e un\'anima al tuo brand.',
-      longDescription: 'Nelle maree digitali odierne, distinguersi richiede più di un semplice logo. MicDrop Studio progetta ecosistemi di brand capaci di raccontare storie coinvolgenti. Analizziamo approfonditamente il tuo posizionamento per distillare una personalità magnetica fatta di typography coerente, colori coordinati e linee guida consolidate.',
-      icon: 'Compass',
-      imageUrl: agencyBrandingImg,
-      highlights: [
-        'Brand Identity & Logo Design',
-        'Visual & Graphic Assets',
-        'Strategia di Posizionamento',
-        'Copywriting & Narrative Tone'
-      ],
-      gradientClass: 'from-brand-violet to-brand-violet-dark border-brand-violet/30 group-hover:border-brand-violet/60'
-    },
-    {
       id: 'social-content',
       title: 'Social Media Content',
       description: 'Creazione Reel e TikTok virali con montaggio dinamico e copy trascinante.',
