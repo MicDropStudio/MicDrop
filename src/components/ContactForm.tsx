@@ -51,7 +51,7 @@ export default function ContactForm() {
                      `- Servizio di Interesse: ${service === 'ALL' ? 'Pacchetto Completo' : service}\n\n` +
                      `Dettagli del Progetto:\n${message}`;
     
-    const gmailWebLink = `https://mail.google.com/mail/?view=cm&fs=1&to=agencymicdrop@gmail.com&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(mailBody)}`;
+    const gmailWebLink = `https://mail.google.com/mail/?view=cm&fs=1&to=info.micdropstudio@gmail.com&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(mailBody)}`;
     
     setLastGmailWebUrl(gmailWebLink);
     setLastSubmittedDetails({ name, email, phone, service, message });
@@ -117,7 +117,7 @@ export default function ContactForm() {
                   </div>
                   <div>
                     <span className="block text-[10px] font-mono text-gray-500 uppercase mb-1">PROPOSTE ED INFO</span>
-                    <a href="mailto:info.micdropstudio@gmail.com" className="text-sm font-bold text-gray-200 hover:text-white">agencymicdrop@gmail.com</a>
+                    <a href="mailto:info.micdropstudio@gmail.com" className="text-sm font-bold text-gray-200 hover:text-white">info.micdropstudio@gmail.com</a>
                   </div>
                 </div>
 

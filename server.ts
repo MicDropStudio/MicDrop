@@ -26,7 +26,7 @@ async function startServer() {
     const smtpPort = parseInt(process.env.SMTP_PORT || "465", 10);
     const smtpUser = process.env.SMTP_USER;
     const smtpPass = process.env.SMTP_PASS;
-    const recipient = process.env.NOTIFICATION_EMAIL || "agencymicdrop@gmail.com";
+    const recipient = process.env.NOTIFICATION_EMAIL || "info.micdropstudio@gmail.com";
 
     // If SMTP user or SMTP pass is not defined, we cannot send silently via backend
     if (!smtpUser || !smtpPass) {

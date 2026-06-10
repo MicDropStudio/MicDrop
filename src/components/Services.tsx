@@ -103,7 +103,7 @@ export default function Services() {
                      `- Servizio Richiesto: ${serviceName}\n\n` +
                      `Dettagli della Richiesta:\n${bookingDetails}`;
 
-    const gmailWebLink = `https://mail.google.com/mail/?view=cm&fs=1&to=agencymicdrop@gmail.com&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(mailBody)}`;
+    const gmailWebLink = `https://mail.google.com/mail/?view=cm&fs=1&to=info.micdropstudio@gmail.com&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(mailBody)}`;
     setLastGmailWebUrl(gmailWebLink);
 
     try {
