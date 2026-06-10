@@ -87,12 +87,20 @@ export default function Services() {
     if (!bookingName || !bookingEmail || !bookingDetails || !bookingService) return;
 
     const serviceName = bookingService.title;
-    const subject = `Prenotazione Servizio: ${serviceName} - ${bookingName}`;
-    const mailBody = `Ciao MicDrop Studio,\n\nEcco i dettagli del contatto per la richiesta di servizio:\n\n` +
-                     `- Nome Completo: ${bookingName}\n` +
-                     `- Email di Lavoro: ${bookingEmail}\n` +
-                     `- Servizio Richiesto: ${serviceName}\n\n` +
-                     `Dettagli della Richiesta:\n${bookingDetails}`;
+    const subject = `🔥 RICHIESTA SERVIZIO: ${serviceName} - ${bookingName}`;
+    const mailBody = `👋 Ciao MicDrop Studio,\n` +
+  `C'è una nuova richiesta specifica per uno dei vostri servizi.\n\n` +
+  `--------------------------------------------------\n` +
+  `🛠️ SERVIZIO SELEZIONATO: ${serviceName.toUpperCase()}\n` +
+  `--------------------------------------------------\n\n` +
+  `👤 NOME CLIENTE:\n` +
+  `${bookingName}\n\n` +
+  `✉️ EMAIL DI LAVORO:\n` +
+  `${bookingEmail}\n\n` +
+  `📝 NOTE E DETTAGLI DEL PROGETTO:\n` +
+  `${bookingDetails}\n\n` +
+  `--------------------------------------------------\n` +
+  `✨ Richiesta generata dal catalogo servizi MicDrop Studio`;
 
     const gmailWebLink = `https://mail.google.com/mail/?view=cm&fs=1&to=info.micdropstudio@gmail.com&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(mailBody)}`;
     

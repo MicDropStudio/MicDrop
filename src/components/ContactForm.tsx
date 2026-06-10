@@ -24,13 +24,22 @@ export default function ContactForm() {
     e.preventDefault();
     if (!name || !email || !message) return;
 
-    const subject = `Nuovo Progetto MicDrop Studio - ${name}`;
-    const mailBody = `Ciao MicDrop Studio,\n\nEcco i dettagli del mio contatto:\n\n` +
-                     `- Nome Completo: ${name}\n` +
-                     `- Email di Lavoro: ${email}\n` +
-                     `- Telefono: ${phone || 'Non fornito'}\n` +
-                     `- Servizio di Interesse: ${service === 'ALL' ? 'Pacchetto Completo' : service}\n\n` +
-                     `Dettagli del Progetto:\n${message}`;
+    const subject = `🚀 NUOVO PROGETTO - ${name}`;
+    const mailBody = `👋 Ciao MicDrop Studio,\n` +
+  `È appena stata generata una richiesta di contatto dal sito web.\n\n` +
+  `--------------------------------------------------\n` +
+  `📋 DETTAGLI DEL CONTATTO\n` +
+  `--------------------------------------------------\n` +
+  `👤 Nome Completo:   ${name}\n` +
+  `✉️ Email di Lavoro: ${email}\n` +
+  `📞 Telefono:         ${phone || 'Non fornito'}\n` +
+  `🎯 Servizio:         ${service === 'ALL' ? '⚡ Pacchetto Completo' : service}\n\n` +
+  `--------------------------------------------------\n` +
+  `💡 DETTAGLI DEL PROGETTO\n` +
+  `--------------------------------------------------\n` +
+  `${message}\n\n` +
+  `--------------------------------------------------\n` +
+  `✨ Inviato in automatico dal Form di MicDrop Studio`;
     
     const gmailWebLink = `https://mail.google.com/mail/?view=cm&fs=1&to=info.micdropstudio@gmail.com&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(mailBody)}`;
     
