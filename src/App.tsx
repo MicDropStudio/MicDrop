@@ -80,7 +80,7 @@ export default function App() {
             </div>
 
             <p className="text-xs text-gray-400 max-w-sm md:max-w-md text-center leading-relaxed" id="footer-text-centered">
-              Siamo un'agenzia creativa specializzata in podcasting, identity design e strategie social. Curiamo ogni aspetto creativo e tecnico per dare valore alla tua voce.
+              Curiamo ogni aspetto creativo e tecnico per dare valore alla tua voce.
             </p>
 
             {/* Quick columns navigation */}
