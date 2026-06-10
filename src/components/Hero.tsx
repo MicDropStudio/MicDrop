@@ -44,7 +44,7 @@ export default function Hero() {
                 className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-dark-card border border-dark-border hover:border-brand-violet/50 hover:bg-brand-violet-dark/15 text-gray-200 hover:text-white font-bold tracking-wider rounded-xl transition-all duration-300 text-center cursor-pointer"
                 id="hero-cta-talk"
               >
-                <span>PRENOTA UNA CONSULENZA</span>
+                <span>INIZIA IL TUO PROGETTO</span>
               </a>
             </div>
 
