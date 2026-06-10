@@ -134,7 +134,7 @@ export default function Services() {
           </h2>
         </div>
 
-        <div className="flex flex-wrap justify-center gap-8" id="services-grid">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 justify-center justify-items-center gap-8" id="services-grid">
           {servicesData.map((service) => (
             <div
               key={service.id}
