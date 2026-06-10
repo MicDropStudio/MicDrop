@@ -125,7 +125,7 @@ export default function ContactForm() {
                   <a href="https://wa.me/393317712292" target="_blank" rel="noopener noreferrer" className="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-[#25D366]/10 text-[#25D366] text-xs font-bold uppercase border border-[#25D366]/30">
                     <MessageCircle className="w-4 h-4" /> WhatsApp
                   </a>
-                  <a href="https://instagram.com/micdrop.studio" target="_blank" rel="noopener noreferrer" className="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-gradient-to-r from-[#833AB4]/10 to-[#FCAF45]/10 text-[#F56040] text-xs font-bold uppercase border border-[#F56040]/30">
+                  <a href="https://instagram.com/micdrop__studio" target="_blank" rel="noopener noreferrer" className="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-gradient-to-r from-[#833AB4]/10 to-[#FCAF45]/10 text-[#F56040] text-xs font-bold uppercase border border-[#F56040]/30">
                     <Instagram className="w-4 h-4" /> Instagram
                   </a>
                 </div>
