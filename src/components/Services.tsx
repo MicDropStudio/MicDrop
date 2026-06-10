@@ -18,12 +18,6 @@ export default function Services() {
   const [bookingName, setBookingName] = useState('');
   const [bookingEmail, setBookingEmail] = useState('');
   const [bookingDetails, setBookingDetails] = useState('');
-  const [bookingSubmitting, setBookingSubmitting] = useState(false);
-  const [bookingSuccess, setBookingSuccess] = useState(false);
-
-  // Email delivery states matching ContactForm
-  const [lastGmailWebUrl, setLastGmailWebUrl] = useState('');
-  const [smtpStatus, setSmtpStatus] = useState<'IDLE' | 'SUCCESS' | 'ERROR'>('IDLE');
 
   const servicesData: Service[] = [
     {
@@ -88,12 +82,9 @@ export default function Services() {
     }
   };
 
-  const handleBookingSubmit = async (e: React.FormEvent) => {
+  const handleBookingSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!bookingName || !bookingEmail || !bookingDetails || !bookingService) return;
-
-    setBookingSubmitting(true);
-    setSmtpStatus('IDLE');
 
     const serviceName = bookingService.title;
     const subject = `Prenotazione Servizio: ${serviceName} - ${bookingName}`;
@@ -104,45 +95,19 @@ export default function Services() {
                      `Dettagli della Richiesta:\n${bookingDetails}`;
 
     const gmailWebLink = `https://mail.google.com/mail/?view=cm&fs=1&to=info.micdropstudio@gmail.com&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(mailBody)}`;
-    setLastGmailWebUrl(gmailWebLink);
+    
+    // Apre direttamente Gmail Web in una nuova scheda
+    window.open(gmailWebLink, '_blank', 'noopener,noreferrer');
 
-    try {
-      const response = await fetch('https://api.web3forms.com/submit', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify({
-          access_key: "359175a9-796c-4a21-a92f-4bbc8d341c6f",
-          from_name: "Sito MicDrop Studio - Servizi",
-          subject: subject,
-          name: bookingName,
-          email: bookingEmail,
-          service: serviceName,
-          message: bookingDetails,
-        }),
-      });
-
-      const data = await response.json();
-      if (response.ok && data.success) {
-        setSmtpStatus('SUCCESS');
-      } else {
-        setSmtpStatus('ERROR');
-      }
-    } catch (err) {
-      setSmtpStatus('ERROR');
-    } finally {
-      setBookingSubmitting(false);
-      setBookingSuccess(true);
-      setBookingName('');
-      setBookingEmail('');
-      setBookingDetails('');
-    }
+    // Chiude la modale e ripulisce i campi
+    closeBookingModal();
   };
 
   const closeBookingModal = () => {
     setBookingService(null);
-    setBookingSuccess(false);
-    setBookingSubmitting(false);
-    setSmtpStatus('IDLE');
+    setBookingName('');
+    setBookingEmail('');
+    setBookingDetails('');
   };
 
   return (
@@ -230,7 +195,7 @@ export default function Services() {
         </div>
       )}
 
-      {/* POPUP REALE: Modale Prenotazione aggiornato a Web3Forms */}
+      {/* POPUP REALE: Modale Prenotazione aggiornato per apertura diretta Gmail */}
       {bookingService && (
         <div className="fixed inset-0 bg-black/90 backdrop-blur-md z-[100] flex items-center justify-center p-4 animate-fade-in" onClick={closeBookingModal} id="booking-form-overlay">
           <div className="bg-dark-card border border-dark-border rounded-xl p-5 md:p-6 max-w-md w-full relative border-glow-orange animate-scale-up" onClick={(e) => e.stopPropagation()} id="booking-form-modal">
@@ -238,76 +203,36 @@ export default function Services() {
               <X className="w-4 h-4" />
             </button>
 
-            {!bookingSuccess ? (
-              <form onSubmit={handleBookingSubmit} className="flex flex-col gap-4">
-                <div className="flex items-center gap-2.5 border-b border-dark-border/30 pb-3 mb-1">
-                  <div className="w-9 h-9 rounded-lg bg-dark-bg border border-dark-border flex items-center justify-center">
-                    {getIcon(bookingService.icon)}
-                  </div>
-                  <div>
-                    <h3 className="text-base font-black font-display text-white">Richiedi: {bookingService.title}</h3>
-                    <p className="text-[11px] text-gray-400">Invia la richiesta di preventivo via email.</p>
-                  </div>
+            <form onSubmit={handleBookingSubmit} className="flex flex-col gap-4">
+              <div className="flex items-center gap-2.5 border-b border-dark-border/30 pb-3 mb-1">
+                <div className="w-9 h-9 rounded-lg bg-dark-bg border border-dark-border flex items-center justify-center">
+                  {getIcon(bookingService.icon)}
                 </div>
-
-                <div className="flex flex-col gap-1">
-                  <label className="text-[9px] font-mono font-bold uppercase text-gray-400 tracking-wider">Nome Completo *</label>
-                  <input type="text" required value={bookingName} onChange={(e) => setBookingName(e.target.value)} placeholder="Es: Mario Rossi" className="bg-dark-bg border border-dark-border/80 focus:border-brand-orange rounded-lg px-3 py-2 text-xs text-gray-100 focus:outline-hidden w-full" />
-                </div>
-
-                <div className="flex flex-col gap-1">
-                  <label className="text-[9px] font-mono font-bold uppercase text-gray-400 tracking-wider">Email di Lavoro *</label>
-                  <input type="email" required value={bookingEmail} onChange={(e) => setBookingEmail(e.target.value)} placeholder="Es: mario@azienda.com" className="bg-dark-bg border border-dark-border/80 focus:border-brand-orange rounded-lg px-3 py-2 text-xs text-gray-100 focus:outline-hidden w-full" />
-                </div>
-
-                <div className="flex flex-col gap-1">
-                  <label className="text-[9px] font-mono font-bold uppercase text-gray-400 tracking-wider">Dettagli della Richiesta *</label>
-                  <textarea required rows={3} value={bookingDetails} onChange={(e) => setBookingDetails(e.target.value)} placeholder="Descrivi le tue necessità..." className="bg-dark-bg border border-dark-border/80 focus:border-brand-orange rounded-lg p-3 text-xs text-gray-100 focus:outline-hidden resize-none w-full" />
-                </div>
-
-                <button type="submit" disabled={bookingSubmitting} className="w-full py-2.5 mt-1 bg-brand-orange hover:bg-brand-orange-light text-white font-bold text-xs uppercase tracking-widest rounded-lg transition-all flex items-center justify-center gap-2 cursor-pointer">
-                  {bookingSubmitting ? 'Inviando...' : 'Invia Richiesta'}
-                </button>
-              </form>
-            ) : (
-              /* Nuova schermata di successo pulita */
-              <div className="text-center py-4 flex flex-col items-center gap-5" id="booking-success-view">
-                <div className={`w-14 h-14 rounded-full flex items-center justify-center ${smtpStatus === 'SUCCESS' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-amber-500/10 text-amber-400'}`}>
-                  {smtpStatus === 'SUCCESS' ? <CheckCircle2 className="w-7 h-7" /> : <AlertTriangle className="w-7 h-7" />}
-                </div>
-
                 <div>
-                  <h3 className="text-lg font-black font-display text-white mb-1.5">
-                    {smtpStatus === 'SUCCESS' ? 'RICHIESTA INVIATA!' : 'INVIO DIRETTO FALLITO'}
-                  </h3>
-                  <p className="text-xs text-gray-300 max-w-xs mx-auto leading-relaxed">
-                    {smtpStatus === 'SUCCESS' 
-                      ? "Perfetto! La tua richiesta è stata trasmessa ai nostri sistemi Web3Forms con successo. Ti risponderemo a brevissimo."
-                      : "C'è un blocco temporaneo. Clicca qui sotto per inviarci la richiesta tramite mail precompilata:"
-                    }
-                  </p>
+                  <h3 className="text-base font-black font-display text-white">Richiedi: {bookingService.title}</h3>
+                  <p className="text-[11px] text-gray-400">Genera la tua email precompilata con un click.</p>
                 </div>
-
-                {smtpStatus !== 'SUCCESS' && (
-                  <div className="flex flex-col gap-2.5 w-full text-left">
-                    <a href={lastGmailWebUrl} target="_blank" rel="noopener noreferrer" className="flex items-center justify-between gap-3 p-3 rounded-lg bg-red-500/10 border border-red-500/25 text-white transition-all group">
-                      <div className="flex items-center gap-2.5">
-                        <div className="w-7 h-7 rounded-md bg-red-500/10 flex items-center justify-center text-red-500"><Mail className="w-3.5 h-3.5" /></div>
-                        <div>
-                          <span className="block text-xs font-bold text-white">Invia con Gmail Web</span>
-                          <span className="text-[10px] text-gray-400">Clicca e invia la mail pronta</span>
-                        </div>
-                      </div>
-                      <ExternalLink className="w-3.5 h-3.5 text-gray-500 group-hover:text-white" />
-                    </a>
-                  </div>
-                )}
-
-                <button onClick={closeBookingModal} className="w-full py-2.5 rounded-lg bg-dark-bg border border-dark-border text-xs font-bold uppercase text-gray-400 hover:text-white transition-colors cursor-pointer">
-                  Chiudi
-                </button>
               </div>
-            )}
+
+              <div className="flex flex-col gap-1">
+                <label className="text-[9px] font-mono font-bold uppercase text-gray-400 tracking-wider">Nome Completo *</label>
+                <input type="text" required value={bookingName} onChange={(e) => setBookingName(e.target.value)} placeholder="Es: Mario Rossi" className="bg-dark-bg border border-dark-border/80 focus:border-brand-orange rounded-lg px-3 py-2 text-xs text-gray-100 focus:outline-hidden w-full" />
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <label className="text-[9px] font-mono font-bold uppercase text-gray-400 tracking-wider">Email di Lavoro *</label>
+                <input type="email" required value={bookingEmail} onChange={(e) => setBookingEmail(e.target.value)} placeholder="Es: mario@azienda.com" className="bg-dark-bg border border-dark-border/80 focus:border-brand-orange rounded-lg px-3 py-2 text-xs text-gray-100 focus:outline-hidden w-full" />
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <label className="text-[9px] font-mono font-bold uppercase text-gray-400 tracking-wider">Dettagli della Richiesta *</label>
+                <textarea required rows={3} value={bookingDetails} onChange={(e) => setBookingDetails(e.target.value)} placeholder="Descrivi le tue necessità..." className="bg-dark-bg border border-dark-border/80 focus:border-brand-orange rounded-lg p-3 text-xs text-gray-100 focus:outline-hidden resize-none w-full" />
+              </div>
+
+              <button type="submit" className="w-full py-2.5 mt-1 bg-brand-orange hover:bg-brand-orange-light text-white font-bold text-xs uppercase tracking-widest rounded-lg transition-all flex items-center justify-center gap-2 cursor-pointer">
+                Invia Richiesta
+              </button>
+            </form>
           </div>
         </div>
       )}
